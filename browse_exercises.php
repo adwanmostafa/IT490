@@ -128,26 +128,19 @@ if ((!key_exists('target_area', $_GET) || $_GET['target_area'] == '') && count($
             </select>
             <button type="submit">Filter</button>
         </form>
-  <?php
-        // Step 3: Implement filtering functionality
-        $filteredActivities = [];
-
-        if (isset($_GET['activity_type']) && $_GET['activity_type'] != 'All') {
-            // Perform filtering based on selected activity type
-            $activityType = $_GET['activity_type'];
-            // Here you would make a request to the Google Fit API to retrieve fitness data for the selected activity type
-            // You would then populate $filteredActivities with the retrieved data
-            // Example: $filteredActivities = fetchFitnessDataFromGoogleFitAPI($activityType);
-            echo "<h2>Filtered Activities for $activityType</h2>";
-            // Example output
-            echo "<p>No data available for $activityType</p>";
-        } else {
-            // Display all activities if no specific activity type is selected
-            echo "<h2>All Activities</h2>";
-            // Here you would display all fitness activities or provide instructions for filtering
-            echo "<p>Please select an activity type to filter.</p>";
-        }
-        ?>
+        <?php 
+            if(count($filteredExercises) == 0) echo "Please update your profile with available equipment to get started... Or search by body part/equipment here!"; 
+            else
+            foreach ($filteredExercises as $exercise) : ?>
+            <h2 style="text-align:center;"><?php echo $exercise['name']; ?></h2>
+            <p style="text-align:center;"><?php foreach ($exercise['instructions'] as $x) {
+                                                echo $x . "<br>";
+                                            } ?>
+                <img src="<?php echo $exercise['gifUrl'] ?>" alt="Gif of <?php echo $exercise['name'] ?>" srcset="" />
+            </p>
+        <?php endforeach; ?>
+        <p><strong>Equipment:</strong> <?php echo implode(', ', $exerciseEquipment); ?></p>
+        <!-- Display other exercise details as needed -->
     </div>
 
 </body>
